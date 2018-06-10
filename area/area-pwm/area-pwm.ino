@@ -1,5 +1,5 @@
 //Initialize Digital Pins
-const int MOTOR_ON = 700;
+const int MOTOR_ON = 1000;
 
 const int leftForward = 5;
 const int leftBackward = 4;
@@ -14,9 +14,13 @@ int ls = 0;
 int ts = 0;
 int rs = 0;
 
+int prevDirection = 0;
+const int LEFT = 0;
+const int RIGHT = 1;
+
 const int motorTimeSlice = 1000;
-const int rotationTimeSlice = 1500;
-const int timeSliceLoop = 500;
+const int rotationTimeSlice = 1300;
+const int LOOP_TIME_SLICE = 500;
 
 void setup() {
   // set motor pins as Output
@@ -100,27 +104,33 @@ void loop() {
   Serial.print(ts);
   Serial.print(" -- ");
   Serial.println(rs);
+
   
   if(ls == 0){
     goBackward();
     
-    turnLeft();
+    turnRight();
+    prevDirection = RIGHT;
   }
   else if(rs == 0){
     goBackward();
     
     turnLeft();
+    prevDirection = LEFT;
   }
   else if(ts == 0){
     goBackward();
     goBackward();
-    turnLeft();
+    if(prevDirection == LEFT)
+      turnLeft();
+    else
+      turnRight();
   }
   else{
     goForward();
   }
 
   
-//  delay(timeSliceLoop);
+  delay(LOOP_TIME_SLICE);
 
 }
