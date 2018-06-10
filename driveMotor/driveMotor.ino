@@ -14,6 +14,8 @@ void setup() {
   pinMode(rightForward,OUTPUT);
   pinMode(rightBackward,OUTPUT);
 
+  Serial.println("HELLO");
+
 }
 
 void stopp() {
