@@ -177,7 +177,7 @@ void loop() {
   if(i == 5){
     i = 0;
   }
-  else if(i>1M){
+  else if(i>1){
     stopp();
   }
 
