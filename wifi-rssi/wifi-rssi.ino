@@ -33,31 +33,28 @@ int32_t winsorise() {
   int32_t nb[s];
   for(int j = 0; j < s; j++)
     nb[j] = batch[j]  ;    
-    double interval_dbs;
-    //sotring
-    for(int j =0; j < s; j++)
-        for(int k = 0; k < s-1; k++)
-            if(nb[k]>nb[k+1])
-            {
-                long temp = nb[k];
-                nb[k] = nb[k+1];
-                nb[k+1] = temp;
-            }
-    //winsorisation
-    int index_low = (int) (((1.0-percentile)/2.0)*s);
-    int index_high = (int) ((1-((1.0-percentile)/2.0))*s)-1;
-    for(int j = 0; j < index_low; j++)
-        nb[j] = nb[index_low];
-    for(int j = index_high+1; j < s; j++)
-        nb[j] = nb[index_high];
-    interval_dbs = 0;
-    for(int j = 0; j < s; j++)
-        interval_dbs += double(nb[j]);
-    interval_dbs /= double(s);
-    //cout << "batch number " << i << " has average " << interval_dbs[i]<< endl;
-    return interval_dbs;
-    
-    
+  double interval_dbs;
+  //sotring
+  for(int j =0; j < s; j++)
+    for(int k = 0; k < s-1; k++)
+        if(nb[k]>nb[k+1])
+        {
+            long temp = nb[k];
+            nb[k] = nb[k+1];
+            nb[k+1] = temp;
+        }
+  //winsorisation
+  int index_low = (int) (((1.0-percentile)/2.0)*s);
+  int index_high = (int) ((1-((1.0-percentile)/2.0))*s)-1;
+  for(int j = 0; j < index_low; j++)
+      nb[j] = nb[index_low];
+  for(int j = index_high+1; j < s; j++)
+      nb[j] = nb[index_high];
+  interval_dbs = 0;
+  for(int j = 0; j < s; j++)
+    interval_dbs += double(nb[j]);
+  interval_dbs /= double(s);
+  return interval_dbs;
 }
 
 void setup() {
@@ -71,21 +68,21 @@ void loop() {
   i++;
   if(i==5)
     i = 0;
-  //winsorise();
   int32_t wrssi = winsorise();
   
   unsigned long after = millis();
-  double pWatts = pow( 10.0, (wrssi + 60.0) / 10.0);
   Serial.print("Signal strength: ");
-  Serial.print(rssi);
+  Serial.print(wrssi);
   Serial.println(" dbm ");
-  Serial.print(pWatts);
-  Serial.println("nWatts");
 
-  double distance = pow(10.0, (-16.6 - wrssi) / 20) / 20;
-  Serial.print(distance);
-  Serial.println("meter");
-  Serial.println("");
+//  double pWatts = pow( 10.0, (wrssi + 60.0) / 10.0);
+//  Serial.print(pWatts);
+//  Serial.println("nWatts");
+
+//  double distance = pow(10.0, (-16.6 - wrssi) / 20) / 20;
+//  Serial.print(distance);
+//  Serial.println("meter");
+//  Serial.println("");
 
   Serial.print("Took ");
   Serial.print(after - before);
